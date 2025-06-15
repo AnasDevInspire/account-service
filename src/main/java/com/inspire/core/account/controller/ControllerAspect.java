@@ -1,4 +1,4 @@
-package com.inspire.core.account;
+package com.inspire.core.account.controller;
 
 import java.util.Arrays;
 
@@ -9,8 +9,6 @@ import org.aspectj.lang.annotation.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-
-import com.inspire.core.account.controller.AccountController;
 
 @Aspect
 @Component
