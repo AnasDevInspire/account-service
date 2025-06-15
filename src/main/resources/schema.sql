@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS account (
+    id BIGSERIAL PRIMARY KEY,
+    type VARCHAR(50) NOT NULL,
+    balance NUMERIC(15, 2) NOT NULL DEFAULT 0.00,
+    bank_id INTEGER NOT NULL,
+    is_deleted SMALLINT NOT NULL DEFAULT 0 CHECK (is_deleted IN (0, 1)),
+    FOREIGN KEY (bank_id) REFERENCES bank(id) ON DELETE RESTRICT
+);
