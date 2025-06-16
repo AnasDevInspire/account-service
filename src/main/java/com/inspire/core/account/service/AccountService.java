@@ -1,13 +1,13 @@
 package com.inspire.core.account.service;
 
-import com.inspire.core.account.repository.AccountRepository;
-import com.inspire.core.account.entity.Account;
+import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import com.inspire.core.account.entity.Account;
+import com.inspire.core.account.repository.AccountRepository;
 
 @Service
 public class AccountService {
@@ -15,44 +15,66 @@ public class AccountService {
 	@Autowired
 	private AccountRepository accountRepository;
 
+	////////////////////////////////////////////
 	public List<Account> getAllAccounts() {
 		return accountRepository.findAll();
 	}
 
+	////////////////////////////////////////////
 	public Optional<Account> getAccountById(Long id) {
 		return accountRepository.findById(id);
 	}
 
+	////////////////////////////////////////////
 	public Optional<Account> getAccountByIdAndType(Long id, String type) {
 		return accountRepository.findByIdAndType(id, type);
 	}
 
+	////////////////////////////////////////////
 	public Account createAccount(Account account) {
 		return accountRepository.save(account);
 	}
-
+	
+	////////////////////////////////////////////
 	public Account updateAccount(Long id, Account updated) {
-		return accountRepository.findById(id).map(existing -> {
-			existing.setType(updated.getType());
-			existing.setBalance(updated.getBalance());
-			existing.setBankId(updated.getBankId());
-			existing.setIsDeleted(updated.getIsDeleted());
-			return accountRepository.save(existing);
-		}).orElseThrow(() -> new RuntimeException("Account not found"));
+		Optional<Account> optinalAccount = accountRepository.findById(id);
+		
+		if (optinalAccount.isEmpty()) {
+			throw new RuntimeException("Account not found");
+		}
+		
+		Account account = optinalAccount.get(); 
+		account.setBalance(updated.getBalance());
+		account.setBankId(updated.getBankId());
+		account.setIsDeleted(updated.getIsDeleted());
+		
+		return accountRepository.save(account);
 	}
 	
+	////////////////////////////////////////////
 	public Account updateAccountBalance(Long id, double newBalance) {
-		return accountRepository.findById(id).map(existing -> {
-			existing.setBalance(newBalance);
-			return accountRepository.save(existing);
-		}).orElseThrow(() -> new RuntimeException("Account not found"));
+		Optional<Account> optionalAccount = accountRepository.findById(id);
+		if (optionalAccount.isEmpty()) {
+			throw new RuntimeException("Account not found");
+		}
+
+		Account account = optionalAccount.get();
+		account.setBalance(newBalance);
+		return accountRepository.save(account);
 	}
 
+	////////////////////////////////////////////
 	public Account deleteAccount(Long id) {
-		return accountRepository.findById(id).map(existing -> {
-			existing.setIsDeleted(0);
-			return accountRepository.save(existing);
-		}).orElseThrow(() -> new RuntimeException("Account not found"));
-	}
+		Optional<Account> optionalAccount = accountRepository.findById(id);
 
+		if (optionalAccount.isEmpty()) {
+			throw new RuntimeException("Account not found");
+		}
+
+		Account account = optionalAccount.get();
+		account.setIsDeleted(1);
+
+		return accountRepository.save(account);
+
+	}
 }
