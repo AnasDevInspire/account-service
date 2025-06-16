@@ -64,7 +64,7 @@ public class AccountController {
 		return ResponseEntity.ok(updateAccount);
 	}
 
-	@PutMapping("/{id}/balance/{newBalance}")
+	@PutMapping("/{id}/{newBalance}")
 	////////////////////////////////////////////
 	public ResponseEntity<Account> updateAccountBalance(@PathVariable Long id, @PathVariable double newBalance) {
 		Account updateAccountBalance = accountService.updateAccountBalance(id, newBalance);
