@@ -1,6 +1,7 @@
 package com.inspire.core.account.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,48 +21,60 @@ import com.inspire.core.account.service.AccountService;
 @RequestMapping("/api/accounts")
 public class AccountController {
 
-    @Autowired
-    private AccountService accountService;
+	@Autowired
+	private AccountService accountService;
 
-    @GetMapping
-    public List<Account> getAcocunts() {
-    	List<Account> allAccounts = accountService.getAllAccounts();
-		return allAccounts;
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Account> getAccountById(@PathVariable Long id) {
-        return accountService.getAccountById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
-    
-    
-	@GetMapping("/{id}/{type}")
-	public ResponseEntity<Account> getAccountByIdAndType(@PathVariable Long id, @PathVariable String type) {
-		return accountService.getAccountById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+	@GetMapping
+	////////////////////////////////////////////
+	public ResponseEntity<List<Account>> getAcocunts() {
+		List<Account> accounts = accountService.getAllAccounts();
+		return ResponseEntity.ok(accounts);
 	}
 
-    @PostMapping
-    public Account createAccount(@RequestBody Account account) {
-        return accountService.createAccount(account);
-    }
+	@GetMapping("/{id}")
+	////////////////////////////////////////////
+	public ResponseEntity<Account> getAccountById(@PathVariable Long id) {
+		Optional<Account> optinalAccount = accountService.getAccountById(id);
+		if (optinalAccount.isEmpty()) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(optinalAccount.get());
+	}
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Account> updateAcccount(@PathVariable Long id, @RequestBody Account account) {
-        Account updateAccount = accountService.updateAccount(id, account);
+	@GetMapping("/{id}/{type}")
+	////////////////////////////////////////////
+	public ResponseEntity<Account> getAccountByIdAndType(@PathVariable Long id, @PathVariable String type) {
+		Optional<Account> optinalAccount = accountService.getAccountByIdAndType(id, type);
+		if (optinalAccount.isEmpty()) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(optinalAccount.get());
+	}
+
+	@PostMapping
+	////////////////////////////////////////////
+	public ResponseEntity<Account> createAccount(@RequestBody Account account) {
+		return ResponseEntity.ok(accountService.createAccount(account));
+	}
+
+	@PutMapping("/{id}")
+	////////////////////////////////////////////
+	public ResponseEntity<Account> updateAcccount(@PathVariable Long id, @RequestBody Account account) {
+		Account updateAccount = accountService.updateAccount(id, account);
 		return ResponseEntity.ok(updateAccount);
-    }
-    
-    @PutMapping("/{id}/balance/{newBalance}")
-    public ResponseEntity<Account> updateAccountBalance(@PathVariable Long id, @PathVariable double newBalance) {
-    	Account updateAccountBalance = accountService.updateAccountBalance(id, newBalance);
-    	return ResponseEntity.ok(updateAccountBalance);
-    }
-    
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAccount(@PathVariable Long id) {
-        accountService.deleteAccount(id);
-        return ResponseEntity.noContent().build();
-    }
+	}
+
+	@PutMapping("/{id}/balance/{newBalance}")
+	////////////////////////////////////////////
+	public ResponseEntity<Account> updateAccountBalance(@PathVariable Long id, @PathVariable double newBalance) {
+		Account updateAccountBalance = accountService.updateAccountBalance(id, newBalance);
+		return ResponseEntity.ok(updateAccountBalance);
+	}
+
+	@DeleteMapping("/{id}")
+	////////////////////////////////////////////
+	public ResponseEntity<Void> deleteAccount(@PathVariable Long id) {
+		accountService.deleteAccount(id);
+		return ResponseEntity.noContent().build();
+	}
 }
