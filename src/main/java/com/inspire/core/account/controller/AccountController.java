@@ -35,6 +35,12 @@ public class AccountController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+    
+    
+	@GetMapping("/{id}/{type}")
+	public ResponseEntity<Account> getAccountByIdAndType(@PathVariable Long id, @PathVariable String type) {
+		return accountService.getAccountById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+	}
 
     @PostMapping
     public Account createAccount(@RequestBody Account account) {

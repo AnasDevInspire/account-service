@@ -1,5 +1,7 @@
 package com.inspire.core.account.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -7,5 +9,7 @@ import com.inspire.core.account.entity.Account;
 
 @Repository
 public interface AccountRepository extends JpaRepository<Account, Long> {
-    // Add custom queries later if needed
+
+	Optional<Account> findByIdAndType(Long id, String type);
+
 }

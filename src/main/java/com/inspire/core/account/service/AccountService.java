@@ -23,6 +23,10 @@ public class AccountService {
 		return accountRepository.findById(id);
 	}
 
+	public Optional<Account> getAccountByIdAndType(Long id, String type) {
+		return accountRepository.findByIdAndType(id, type);
+	}
+
 	public Account createAccount(Account account) {
 		return accountRepository.save(account);
 	}
