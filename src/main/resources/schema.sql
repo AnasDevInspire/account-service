@@ -1,12 +1,12 @@
-CREATE TABLE IF NOT EXISTS employee (
-    id BIGSERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    email VARCHAR(100) NOT NULL UNIQUE,
-    account_id BIGINT NOT NULL UNIQUE,
-    is_deleted SMALLINT NOT NULL DEFAULT 0 CHECK (is_deleted IN (0, 1)),
-    FOREIGN KEY (account_id) REFERENCES account(id) ON DELETE RESTRICT
-);
+CREATE TYPE account_type AS ENUM ('COMPANY', 'EMPLOYEE');
 
+CREATE TABLE IF NOT EXISTS account (
+  id       SERIAL          PRIMARY KEY,
+  type     account_type    NOT NULL DEFAULT 'EMPLOYEE',
+  balance  NUMERIC(15,2)   NOT NULL DEFAULT 0.00,
+  bank_id  INTEGER         NOT NULL
+    REFERENCES bank(id) ON DELETE CASCADE
+);
 
 CREATE TABLE IF NOT EXISTS bank (
     id SERIAL PRIMARY KEY,
