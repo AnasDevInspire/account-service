@@ -2,6 +2,8 @@ package com.inspire.core.account.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -15,8 +17,9 @@ public class Account {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(nullable = false)
-	private String type; // COMPANY or EMPLOYEE
+	@Enumerated(EnumType.STRING)
+	@Column(name = "type", nullable = false)
+	private AccountType type;
 
 	@Column(nullable = false)
 	private Double balance = 0.0;
@@ -35,11 +38,11 @@ public class Account {
 		this.id = id;
 	}
 
-	public String getType() {
+	public AccountType getType() {
 		return type;
 	}
 
-	public void setType(String type) {
+	public void setType(AccountType type) {
 		this.type = type;
 	}
 
@@ -72,7 +75,5 @@ public class Account {
 		return "Account [id=" + id + ", type=" + type + ", balance=" + balance + ", bankId=" + bankId + ", isDeleted="
 				+ isDeleted + "]";
 	}
-	
-	
 
 }

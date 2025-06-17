@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.inspire.core.account.entity.Account;
+import com.inspire.core.account.entity.AccountType;
 import com.inspire.core.account.service.AccountService;
 
 @RestController
@@ -43,7 +44,7 @@ public class AccountController {
 
 	@GetMapping("/{id}/{type}")
 	////////////////////////////////////////////
-	public ResponseEntity<Account> getAccountByIdAndType(@PathVariable Long id, @PathVariable String type) {
+	public ResponseEntity<Account> getAccountByIdAndType(@PathVariable Long id, @PathVariable AccountType type) {
 		Optional<Account> optinalAccount = accountService.getAccountByIdAndType(id, type);
 		if (optinalAccount.isEmpty()) {
 			return ResponseEntity.notFound().build();

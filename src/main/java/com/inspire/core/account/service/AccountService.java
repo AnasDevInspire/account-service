@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.inspire.core.account.entity.Account;
+import com.inspire.core.account.entity.AccountType;
 import com.inspire.core.account.repository.AccountRepository;
 
 @Service
@@ -26,7 +27,7 @@ public class AccountService {
 	}
 
 	////////////////////////////////////////////
-	public Optional<Account> getAccountByIdAndType(Long id, String type) {
+	public Optional<Account> getAccountByIdAndType(Long id, AccountType type) {
 		return accountRepository.findByIdAndType(id, type);
 	}
 
@@ -46,6 +47,7 @@ public class AccountService {
 		Account account = optinalAccount.get(); 
 		account.setBalance(updated.getBalance());
 		account.setBankId(updated.getBankId());
+		account.setType(updated.getType());
 		account.setIsDeleted(updated.getIsDeleted());
 		
 		return accountRepository.save(account);
