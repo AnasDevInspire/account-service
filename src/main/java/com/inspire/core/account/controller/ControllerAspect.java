@@ -18,15 +18,15 @@ public class ControllerAspect {
 
 	@Before("execution(* com.inspire.core.account.controller.AccountController.*(..))")
 	public void logBeforeMethod(JoinPoint joinPoint) {
-//		logger.info(joinPoint.getSignature().getName(),joinPoint.getArgs());
 		Object[] args = joinPoint.getArgs();
 		String methodName = joinPoint.getSignature().getName();
-		logger.info(">> {}() - {}", methodName, Arrays.toString(args));
+		logger.info("{}() - {}", methodName, Arrays.toString(args));
 	}
 
 	@After("execution(* com.inspire.core.account.controller.AccountController.*(..))")
 	public void logAfterMethod(JoinPoint joinPoint) {
-		logger.info("/" + joinPoint.getSignature().getName(), joinPoint.getArgs());
-//		logger.info("/" + joinPoint.getSignature().getName());
+		Object[] args = joinPoint.getArgs();
+		String methodName = joinPoint.getSignature().getName();
+		logger.info("/{}() - {}", methodName, Arrays.toString(args));
 	}
 }
